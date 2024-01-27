@@ -185,6 +185,30 @@ describe("Core htmx Parameter Handling", function() {
         vals['do'].should.equal('rey');
     })
 
+    it('form includes outside button name and value if button has the form attribute with type submit when clicked', function () {
+        var form = make('<form hx-get="/foo" id="test-form"><input id="i1" name="foo" value="bar"/></form>');
+        var button = make('<button form="test-form" type="submit" id="btn1" name="do" value="rey"></button>');
+        button.click();
+        var vals = htmx._('getInputValues')(form).values;
+        vals['do'].should.equal('rey');
+    })
+
+    it('form includes outside button name and value if button has the form attribute with default type when clicked', function () {
+        var form = make('<form hx-get="/foo" id="test-form"><input id="i1" name="foo" value="bar"/></form>');
+        var button = make('<button form="test-form" id="btn1" name="do" value="rey"></button>');
+        button.click();
+        var vals = htmx._('getInputValues')(form).values;
+        vals['do'].should.equal('rey');
+    })
+
+    it('form includes outside input name and value if input has the form attribute with type submit when clicked', function () {
+        var form = make('<form hx-get="/foo" id="test-form"><input id="i1" name="foo" value="bar"/></form>');
+        var input = make('<input form="test-form" type="submit" id="btn1" name="do" value="rey" />');
+        input.click();
+        var vals = htmx._('getInputValues')(form).values;
+        vals['do'].should.equal('rey');
+    })
+
     it('it puts GET params in the URL by default', function () {
         this.server.respondWith("GET", "/test?i1=value", function (xhr) {
             xhr.respond(200, {}, "Clicked!");

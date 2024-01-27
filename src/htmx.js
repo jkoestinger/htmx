@@ -2130,7 +2130,9 @@ return (function () {
 
                 // Handle submit buttons/inputs that have the form attribute set
                 // see https://developer.mozilla.org/docs/Web/HTML/Element/button
-                if (elt.tagName === "FORM" || (getRawAttribute(elt, "type") === "submit" && hasAttribute(elt, "form"))) {
+                const isSubmitButton = (elt.tagName === "BUTTON" && (!hasAttribute(elt, "type") || getRawAttribute(elt, "type") === "submit"))
+                const isSubmitInput = elt.tagName === "INPUT" && getRawAttribute(elt, "type") === "submit"
+                if (elt.tagName === "FORM" || (hasAttribute(elt, "form") && (isSubmitButton || isSubmitInput))) {
                     initButtonTracking(elt)
                 }
 
